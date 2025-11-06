@@ -49,13 +49,11 @@ class CreateTripViewController: UIViewController, PHPickerViewControllerDelegate
         
         loadImageButton.configuration = .tinted()
         loadImageButton.setTitle("Load Image", for: .normal)
-        loadImageButton.layer.cornerRadius = 23
         loadImageButton.addTarget(self, action: #selector(loadImage), for: .touchUpInside)
         
         continueButton.setTitle("Continue", for: .normal)
-        continueButton.configuration = .tinted()
+        continueButton.configuration = .filled()
         continueButton.tintColor = .systemGreen
-        continueButton.layer.cornerRadius = 23
         continueButton.isEnabled = false
         
         let stackView = UIStackView(arrangedSubviews: [textView, loadImageButton, continueButton])
@@ -65,7 +63,7 @@ class CreateTripViewController: UIViewController, PHPickerViewControllerDelegate
         contentView.addSubview(stackView)
         
         contentView.backgroundColor = .systemBackground
-        contentView.layer.cornerRadius = 23
+        contentView.layer.cornerRadius = 16
         
         view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,14 +77,14 @@ class CreateTripViewController: UIViewController, PHPickerViewControllerDelegate
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.width),
             
-            loadImageButton.heightAnchor.constraint(equalToConstant: 62),
-            continueButton.heightAnchor.constraint(equalToConstant: 62),
+            loadImageButton.heightAnchor.constraint(equalToConstant: 60),
+            continueButton.heightAnchor.constraint(equalToConstant: 60),
             
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 23),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             stackView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
@@ -105,8 +103,8 @@ class CreateTripViewController: UIViewController, PHPickerViewControllerDelegate
         
         if let sheet = imagePicker.sheetPresentationController {
             
-            sheet.preferredCornerRadius = 23
-            sheet.prefersGrabberVisible = true
+            sheet.detents = [.medium()]
+            sheet.preferredCornerRadius = 16
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false
         }
         
@@ -133,11 +131,12 @@ class CreateTripViewController: UIViewController, PHPickerViewControllerDelegate
             continueButton.isEnabled = true
         }
         
-        animatedConstraint?.constant = view.frame.width - 46
-        
-        UIView.animate(withDuration: 0.5) {
+        if let picker = picker.sheetPresentationController {
             
-            self.view.layoutIfNeeded()
+            picker.animateChanges {
+                
+                animatedConstraint?.constant = view.frame.width - 20
+            }
         }
         
         dismiss(animated: true)

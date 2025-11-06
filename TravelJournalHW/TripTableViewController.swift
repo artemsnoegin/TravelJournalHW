@@ -22,7 +22,7 @@ struct Day {
     var images: [UIColor]
 }
 
-class TripTableViewController: UITableViewController {
+class TripTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     
     private var trip: Trip = Trip(
         name: "Baku, Azerbaijan",
@@ -40,13 +40,19 @@ class TripTableViewController: UITableViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
+        setupNavigationBar()
         setupTableView()
     }
     
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        tableView.rowHeight = tableView.frame.height
-//    }
+    private func setupNavigationBar() {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTaped))
+    }
+    
+    @objc private func addTaped() {
+        
+        
+    }
     
     private func setupTableView() {
         
@@ -95,4 +101,5 @@ class TripTableViewController: UITableViewController {
         
         return tableView.frame.height
     }
+
 }

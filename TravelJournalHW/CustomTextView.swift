@@ -1,3 +1,12 @@
+//
+//  CustomTextView.swift
+//  TravelJournalHW
+//
+//  Created by Артём Сноегин on 05.11.2025.
+//
+
+import UIKit
+
 class CustomTextView: UIView {
     
     weak var delegate: CustomTextViewDelegate?
@@ -87,8 +96,8 @@ class CustomTextView: UIView {
         
         NSLayoutConstraint.activate([
             stack.topAnchor.constraint(equalTo: contentView.topAnchor),
-            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }

@@ -11,8 +11,8 @@ class DayTableViewCell: UITableViewCell {
     
     static let reuseId = "DayTableViewCell"
     
-    private let nameLabel = UILabel()
-    private let aboutLabel = UILabel()
+    private let nameTextField = UITextField()
+    private let aboutTextView = UITextView()
     private let imageCollectionView = ImageCollectionView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -27,37 +27,41 @@ class DayTableViewCell: UITableViewCell {
     
     func configure(for day: Day) {
         
-        nameLabel.text = day.name
-        aboutLabel.text = day.about
+        nameTextField.text = day.name
+        aboutTextView.text = day.about
         imageCollectionView.images = day.images
     }
     
     private func setupUI() {
         
-        nameLabel.font = .preferredFont(forTextStyle: .extraLargeTitle2)
-        aboutLabel.font = .preferredFont(forTextStyle: .title3)
+        nameTextField.font = .preferredFont(forTextStyle: .extraLargeTitle2)
+        nameTextField.placeholder = "Day"
+        
+        aboutTextView.font = .preferredFont(forTextStyle: .title3)
+        aboutTextView.textContainerInset = .zero
+        aboutTextView.isScrollEnabled = false
         
         let spacer = UIView()
 
-        [nameLabel, aboutLabel, imageCollectionView, spacer].forEach {
+        [nameTextField, aboutTextView, imageCollectionView, spacer].forEach {
             contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            nameLabel.bottomAnchor.constraint(equalTo: imageCollectionView.topAnchor, constant: -8),
+            nameTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
+            nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            nameTextField.bottomAnchor.constraint(equalTo: imageCollectionView.topAnchor, constant: -8),
             
             imageCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imageCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageCollectionView.heightAnchor.constraint(equalToConstant: frame.width),
             
-            aboutLabel.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 8),
-            aboutLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            aboutLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            aboutLabel.bottomAnchor.constraint(equalTo: spacer.topAnchor, constant: -16),
+            aboutTextView.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 8),
+            aboutTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            aboutTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            aboutTextView.bottomAnchor.constraint(equalTo: spacer.topAnchor, constant: -16),
             
             spacer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])

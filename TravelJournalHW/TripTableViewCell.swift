@@ -12,8 +12,8 @@ class TripTableViewCell: UITableViewCell {
     static let reuseId = "TripTableViewCell"
     
     private let headerImageView = UIView()
-    private let nameLabel = UILabel()
-    private let aboutLabel = UILabel()
+    private let nameTextView = UITextView()
+    private let aboutTextView = UITextView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,47 +28,46 @@ class TripTableViewCell: UITableViewCell {
     func configure(for trip: Trip) {
         
         headerImageView.backgroundColor = trip.image
-        nameLabel.text = trip.name
-        aboutLabel.text = trip.about
+        nameTextView.text = trip.name
+        aboutTextView.text = trip.about
     }
     
     private func setupUI() {
            
-        addSubview(headerImageView)
+        contentView.addSubview(headerImageView)
         headerImageView.translatesAutoresizingMaskIntoConstraints = false
     
-        nameLabel.font = .preferredFont(forTextStyle: .extraLargeTitle)
-        nameLabel.numberOfLines = 2
+        nameTextView.font = .preferredFont(forTextStyle: .extraLargeTitle)
+        nameTextView.textContainerInset = .zero
+        nameTextView.isScrollEnabled = false
         
-        aboutLabel.font = .preferredFont(forTextStyle: .title3)
-        aboutLabel.numberOfLines = 0
+        aboutTextView.font = .preferredFont(forTextStyle: .title3)
+        aboutTextView.textContainerInset = .zero
+        aboutTextView.isScrollEnabled = false
         
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, aboutLabel])
+        let stackView = UIStackView(arrangedSubviews: [nameTextView, aboutTextView])
         stackView.axis = .vertical
         stackView.spacing = 8
         
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(aboutLabel)
-        
-        addSubview(stackView)
+        contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         let spacer = UIView()
-        addSubview(spacer)
+        contentView.addSubview(spacer)
         spacer.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            headerImageView.topAnchor.constraint(equalTo: topAnchor),
-            headerImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            headerImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headerImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headerImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            headerImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             headerImageView.heightAnchor.constraint(equalToConstant: frame.width),
             
             stackView.topAnchor.constraint(equalTo: headerImageView.bottomAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             stackView.bottomAnchor.constraint(equalTo: spacer.topAnchor),
             
-            spacer.bottomAnchor.constraint(equalTo: bottomAnchor)
+            spacer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }

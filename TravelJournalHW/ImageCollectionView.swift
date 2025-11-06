@@ -12,7 +12,7 @@ class ImageCollectionView: UICollectionView {
     var images: [UIColor] = []
     
     private let spacing: CGFloat = 16
-    private var imageSize: CGSize { CGSize(width: frame.width - spacing, height: frame.width - spacing) }
+    private var imageSize: CGSize { CGSize(width: frame.width - spacing / 2, height: frame.width - spacing / 2) }
     
     init() {
         
@@ -64,7 +64,7 @@ extension ImageCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
-        spacing
+        0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

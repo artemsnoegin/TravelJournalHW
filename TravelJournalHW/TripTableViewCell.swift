@@ -11,7 +11,7 @@ class TripTableViewCell: UITableViewCell {
     
     static let reuseId = "TripTableViewCell"
     
-    private let headerImageView = UIView()
+    private let mainImageView = UIImageView()
     private let nameTextView = UITextView()
     private let aboutTextView = UITextView()
     
@@ -27,15 +27,18 @@ class TripTableViewCell: UITableViewCell {
     
     func configure(for trip: Trip) {
         
-        headerImageView.backgroundColor = trip.image
+        mainImageView.image = trip.image
         nameTextView.text = trip.name
         aboutTextView.text = trip.about
     }
     
     private func setupUI() {
-           
-        contentView.addSubview(headerImageView)
-        headerImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        mainImageView.contentMode = .scaleAspectFill
+        mainImageView.backgroundColor = .lightGray
+        
+        contentView.addSubview(mainImageView)
+        mainImageView.translatesAutoresizingMaskIntoConstraints = false
     
         nameTextView.font = .preferredFont(forTextStyle: .extraLargeTitle)
         nameTextView.textContainerInset = .zero
@@ -45,29 +48,25 @@ class TripTableViewCell: UITableViewCell {
         aboutTextView.textContainerInset = .zero
         aboutTextView.isScrollEnabled = false
         
-        let stackView = UIStackView(arrangedSubviews: [nameTextView, aboutTextView])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        
-        contentView.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         let spacer = UIView()
-        contentView.addSubview(spacer)
-        spacer.translatesAutoresizingMaskIntoConstraints = false
+        
+//        let stackView = UIStackView(arrangedSubviews: [nameTextView, aboutTextView])
+//        stackView.axis = .vertical
+//        stackView.spacing = 8
+//        
+//        contentView.addSubview(stackView)
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            headerImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            headerImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            headerImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            headerImageView.heightAnchor.constraint(equalToConstant: frame.width),
+            mainImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            mainImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            mainImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            mainImageView.heightAnchor.constraint(equalToConstant: contentView.frame.width),
             
-            stackView.topAnchor.constraint(equalTo: headerImageView.bottomAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: spacer.topAnchor),
-            
-            spacer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+//            stackView.topAnchor.constraint(equalTo: mainImageView.bottomAnchor, constant: 16),
+//            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+//            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+//            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 }

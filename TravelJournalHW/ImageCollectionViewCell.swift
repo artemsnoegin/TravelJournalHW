@@ -11,7 +11,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "ImageCollectionViewCell"
     
-    private let imageView = UIView()
+    private let imageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,12 +23,15 @@ class ImageCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) not implemented")
     }
     
-    func configure(with image: UIColor) {
+    func configure(with image: UIImage) {
         
-        imageView.backgroundColor = image
+        imageView.image = image
     }
     
     private func setupUI() {
+        
+        contentMode = .scaleAspectFill
+        imageView.backgroundColor = .lightGray
         
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false

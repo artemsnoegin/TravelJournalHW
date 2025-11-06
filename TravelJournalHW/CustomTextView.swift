@@ -161,7 +161,6 @@ class CustomTextView: UIView {
         }
     }
 
-    
     deinit {
         
         NotificationCenter.default.removeObserver(self)

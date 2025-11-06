@@ -9,10 +9,10 @@ import UIKit
 
 class ImageCollectionView: UICollectionView {
     
-    var images: [UIColor] = []
+    var images: [UIImage] = []
     
     private let spacing: CGFloat = 16
-    private var imageSize: CGSize { CGSize(width: frame.width - spacing / 2, height: frame.width - spacing / 2) }
+    private var imageSize: CGSize { CGSize(width: frame.width, height: frame.width) }
     
     init() {
         
@@ -31,6 +31,7 @@ class ImageCollectionView: UICollectionView {
     private func setupCollectionView() {
         delegate = self
         dataSource = self
+        
         
         showsHorizontalScrollIndicator = false
         isPagingEnabled = true
@@ -59,7 +60,7 @@ extension ImageCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: spacing)
+        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

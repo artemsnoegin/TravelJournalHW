@@ -1,25 +1,25 @@
 //
-//  CreateTripViewController.swift
+//  CreateDayVC.swift
 //  TravelJournalHW
 //
-//  Created by Артём Сноегин on 05.11.2025.
+//  Created by Артём Сноегин on 06.11.2025.
 //
 
 import UIKit
 import Photos
 import PhotosUI
 
-class CreateTripViewController: UIViewController {
+class CreateDayViewController: UIViewController {
     
-    var completion: ((Trip) -> Void)?
+    var completion: ((Day) -> Void)?
     
-    private var tripImage = UIImage()
-    private var tripName = ""
-    private var tripAbout = ""
+    private var dayImages = [UIImage]()
+    private var dayName = ""
+    private var dayAbout = ""
     
-    private let imageView = UIImageView()
+    private let imageCollectionView = ImageCollectionView()
     
-    private let loadImageButton = UIButton()
+    private let loadImagesButton = UIButton()
     private let saveButton = UIButton()
     
     private var animatedConstraint: NSLayoutConstraint?
@@ -37,32 +37,31 @@ class CreateTripViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        imageView.contentMode = .scaleAspectFill
-        imageView.alpha = 0
+        imageCollectionView.alpha = 0
         
         textView.delegate = self
-        textView.setTitlePlaceholder(to: "Give trip a name")
-        textView.setBodyPlaceholder(to: "Add trip description")
+        textView.setTitlePlaceholder(to: "Give day a name")
+        textView.setBodyPlaceholder(to: "Add day description")
         
-        loadImageButton.configuration = .tinted()
-        loadImageButton.setTitle("Load Image", for: .normal)
-        loadImageButton.addTarget(self, action: #selector(loadImage), for: .touchUpInside)
+        loadImagesButton.configuration = .tinted()
+        loadImagesButton.setTitle("Load Images", for: .normal)
+        loadImagesButton.addTarget(self, action: #selector(loadImages), for: .touchUpInside)
         
         saveButton.configuration = .filled()
-        saveButton.setTitle("Continue", for: .normal)
+        saveButton.setTitle("Save", for: .normal)
         saveButton.tintColor = .systemGreen
         saveButton.isEnabled = false
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
         
-        let stackView = UIStackView(arrangedSubviews: [textView, loadImageButton, saveButton])
+        let stackView = UIStackView(arrangedSubviews: [textView, loadImagesButton, saveButton])
         stackView.axis = .vertical
         stackView.spacing = 8
         
         let contentView = UIView()
         contentView.backgroundColor = .systemBackground
         
-        view.addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageCollectionView)
+        imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -74,12 +73,12 @@ class CreateTripViewController: UIViewController {
         animatedConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: view.frame.width),
+            imageCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            imageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageCollectionView.heightAnchor.constraint(equalToConstant: view.frame.width),
             
-            loadImageButton.heightAnchor.constraint(equalToConstant: 60),
+            loadImagesButton.heightAnchor.constraint(equalToConstant: 60),
             saveButton.heightAnchor.constraint(equalToConstant: 60),
             
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -93,10 +92,10 @@ class CreateTripViewController: UIViewController {
         ])
     }
     
-    @objc private func loadImage() {
+    @objc private func loadImages() {
         
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 1
+        configuration.selectionLimit = 10
         configuration.filter = .images
         
         let imagePicker = PHPickerViewController(configuration: configuration)
@@ -114,10 +113,8 @@ class CreateTripViewController: UIViewController {
     
     @objc private func saveTapped() {
         
-        let newTrip = Trip(name: tripName, about: tripAbout, image: tripImage, days: [])
-        
-        completion?(newTrip)
-        navigationController?.pushViewController(TripTableViewController(trip: newTrip), animated: true)
+        completion?(Day(name: dayName, about: dayAbout, images: dayImages))
+        navigationController?.popViewController(animated: true)
     }
     
     private func subscribeNotification() {
@@ -143,10 +140,10 @@ class CreateTripViewController: UIViewController {
         else { return }
         
         saveButton.alpha = 0
-        loadImageButton.alpha = 0
-        imageView.alpha = 0
+        loadImagesButton.alpha = 0
+        imageCollectionView.alpha = 0
         
-        if tripImage != UIImage() {
+        if !dayImages.isEmpty {
             
             animatedConstraint?.constant = 0
         }
@@ -163,12 +160,12 @@ class CreateTripViewController: UIViewController {
         else { return }
         
         saveButton.alpha = 1
-        loadImageButton.alpha = 1
-        imageView.alpha = 1
+        loadImagesButton.alpha = 1
+        imageCollectionView.alpha = 1
         
-        if tripImage != UIImage() {
+        if !dayImages.isEmpty {
             
-            animatedConstraint?.constant = view.frame.width - view.safeAreaInsets.top
+            animatedConstraint?.constant = view.frame.width
         }
 
         UIView.animate(withDuration: duration, delay: 0, options: [.curveEaseIn]) {
@@ -183,31 +180,34 @@ class CreateTripViewController: UIViewController {
     }
 }
 
-extension CreateTripViewController: PHPickerViewControllerDelegate {
+extension CreateDayViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
-        guard let provider = results.first?.itemProvider else { return }
-        
-        provider.loadObject(ofClass: UIImage.self) { [weak self] object, error in
+        results.forEach { result in
             
-            if let image = object as? UIImage {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] object, _ in
                 
-                DispatchQueue.main.async {
+                if let image = object as? UIImage {
                     
-                    self?.tripImage = image
-                    self?.imageView.image = image
-                    self?.loadImageButton.setTitle("Change Image", for: .normal)
+                    DispatchQueue.main.async {
+                        
+                        self?.dayImages.append(image)
+                        self?.imageCollectionView.images.append(image)
+                        self?.imageCollectionView.reloadData()
+                        // TODO: change images logic
+                        self?.loadImagesButton.isHidden = true
+                    }
                 }
             }
         }
         
-        if !tripName.isEmpty && !tripAbout.isEmpty {
+        if !dayName.isEmpty && !dayAbout.isEmpty {
             saveButton.isEnabled = true
         }
         
-        animatedConstraint?.constant = view.frame.width - view.safeAreaInsets.top
-        imageView.alpha = 1
+        animatedConstraint?.constant = view.frame.width
+        imageCollectionView.alpha = 1
         
         if let picker = picker.sheetPresentationController {
             
@@ -221,31 +221,34 @@ extension CreateTripViewController: PHPickerViewControllerDelegate {
     }
 }
 
-extension CreateTripViewController: CustomTextViewDelegate {
+extension CreateDayViewController: CustomTextViewDelegate {
     
     func titleDidChange(text: String) {
 
-        tripName = text
+        dayName = text
     
-        if imageView.image != nil, !tripName.isEmpty && !tripAbout.isEmpty {
+        if !imageCollectionView.images.isEmpty, !dayName.isEmpty && !dayAbout.isEmpty {
             
             saveButton.isEnabled = true
         }
         else {
+            
             saveButton.isEnabled = false
         }
     }
     
     func bodyDidChange(text: String) {
 
-        tripAbout = text
+        dayAbout = text
         
-        if imageView.image != nil, !tripName.isEmpty && !tripAbout.isEmpty {
+        if !imageCollectionView.images.isEmpty , !dayName.isEmpty && !dayAbout.isEmpty {
             
             saveButton.isEnabled = true
         }
         else {
+            
             saveButton.isEnabled = false
         }
     }
 }
+

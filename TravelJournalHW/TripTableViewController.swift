@@ -11,7 +11,7 @@ struct Trip {
     
     var name: String
     var about: String
-    var image: UIColor
+    var image: UIImage
     var days: [Day]
 }
 
@@ -19,22 +19,34 @@ struct Day {
     
     var name: String
     var about: String
-    var images: [UIColor]
+    var images: [UIImage]
 }
 
 class TripTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     
-    private var trip: Trip = Trip(
+    private var tripMock: Trip = Trip(
         name: "Baku, Azerbaijan",
         about: "The capital and largest city of Azerbaijan, located on the Caspian Sea. It is also a major center for oil production.",
-        image: .systemYellow,
+        image: UIImage(),
         days: [
-            Day(name: "Day 1", about: "It was very fun!", images: [.systemGreen, .systemCyan, .systemOrange]),
-            Day(name: "Day 2", about: "It was very fun!", images: [.systemGreen, .systemCyan, .systemOrange]),
-            Day(name: "Day 3", about: "It was very fun!", images: [.systemGreen, .systemCyan, .systemOrange]),
-            Day(name: "Day 4", about: "It was very fun!", images: [.systemGreen, .systemCyan, .systemOrange]),
-            Day(name: "Day 5", about: "It was very fun!", images: [.systemGreen, .systemCyan, .systemOrange]),
+            Day(name: "Day 1", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
+            Day(name: "Day 2", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
+            Day(name: "Day 3", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
+            Day(name: "Day 4", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
+            Day(name: "Day 5", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
         ])
+    
+    private var trip: Trip
+    
+    init(trip: Trip) {
+        
+        self.trip = trip
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,12 +58,22 @@ class TripTableViewController: UITableViewController, UIGestureRecognizerDelegat
     
     private func setupNavigationBar() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTaped))
+
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+            
+        navigationItem.rightBarButtonItems = [addButton]
     }
     
-    @objc private func addTaped() {
+    @objc private func addTapped() {
+        let createDayViewController = CreateDayViewController()
         
+        createDayViewController.completion = { [weak self] day in
+            
+            self?.trip.days.append(day)
+            self?.tableView.reloadData()
+        }
         
+        navigationController?.pushViewController(createDayViewController, animated: true)
     }
     
     private func setupTableView() {
@@ -101,5 +123,4 @@ class TripTableViewController: UITableViewController, UIGestureRecognizerDelegat
         
         return tableView.frame.height
     }
-
 }

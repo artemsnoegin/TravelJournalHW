@@ -30,6 +30,7 @@ class DayTableViewCell: UITableViewCell {
         nameTextField.text = day.name
         aboutTextView.text = day.about
         imageCollectionView.images = day.images
+        imageCollectionView.reloadData()
     }
     
     private func setupUI() {
@@ -42,28 +43,35 @@ class DayTableViewCell: UITableViewCell {
         aboutTextView.isScrollEnabled = false
         
         let spacer = UIView()
+        
+        let stackView = UIStackView(arrangedSubviews: [nameTextField, imageCollectionView, aboutTextView, spacer])
+        stackView.axis = .vertical
 
-        [nameTextField, aboutTextView, imageCollectionView, spacer].forEach {
-            contentView.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+        contentView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
         
         NSLayoutConstraint.activate([
-            nameTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
-            nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            nameTextField.bottomAnchor.constraint(equalTo: imageCollectionView.topAnchor, constant: -8),
-            
-            imageCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            imageCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageCollectionView.heightAnchor.constraint(equalToConstant: frame.width),
-            
-            aboutTextView.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 8),
-            aboutTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            aboutTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            aboutTextView.bottomAnchor.constraint(equalTo: spacer.topAnchor, constant: -16),
-            
-            spacer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            stackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+//            nameTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
+//            nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+//            nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+//            nameTextField.bottomAnchor.constraint(equalTo: imageCollectionView.topAnchor, constant: -8),
+//            
+//            imageCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            imageCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+////            imageCollectionView.heightAnchor.constraint(equalToConstant: frame.width),
+//            
+//            aboutTextView.topAnchor.constraint(equalTo: imageCollectionView.bottomAnchor, constant: 8),
+//            aboutTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+//            aboutTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            aboutTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+//            
+//            spacer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }

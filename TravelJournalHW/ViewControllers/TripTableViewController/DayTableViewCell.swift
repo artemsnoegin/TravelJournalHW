@@ -26,13 +26,13 @@ class DayTableViewCell: UITableViewCell {
     
     func configure(for day: Day, isEditing editing: Bool) {
         
-        imagesCollectionView.images = day.images
+        imagesCollectionView.images = []
         imagesCollectionView.reloadData()
         
         textView.setTitlePlaceholder(to: "Give day a name")
-        textView.setTitle(to: day.name)
+        textView.setTitle(to: day.name ?? "Day")
         textView.setBodyPlaceholder(to: "Describe day")
-        textView.setBody(to: day.about)
+        textView.setBody(to: day.about ?? "")
         textView.isEditing(editing)
     }
     

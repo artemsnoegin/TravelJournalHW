@@ -115,10 +115,11 @@ class CreateTripViewController: UIViewController {
     
     @objc private func saveTapped() {
         
-        let newTrip = Trip(name: tripName, about: tripAbout, image: tripImage, days: [])
+        let trip = CoreDataManager.shared.createTrip(name: tripName, about: tripAbout, days: [], imagePath: "")
         
-        completion?(newTrip)
-        navigationController?.pushViewController(TripTableViewController(trip: newTrip), animated: true)
+        completion?(trip)
+
+        navigationController?.pushViewController(TripTableViewController(trip: trip), animated: true)
     }
     
     private func subscribeNotification() {

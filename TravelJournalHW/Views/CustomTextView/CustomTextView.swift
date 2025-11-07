@@ -11,11 +11,13 @@ class CustomTextView: UIView {
     
     weak var delegate: CustomTextViewDelegate?
     
+    private var isEditing = false
+    
     private let titleTextView = UITextView()
-    private var titlePlaceholder = (text: "Title", isOn: true)
+    private var titlePlaceholder = (text: "Title", isOn: false)
     
     private let bodyTextView = UITextView()
-    private var bodyPlaceholder = (text: "Body", isOn: true)
+    private var bodyPlaceholder = (text: "Body", isOn: false)
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -33,6 +35,14 @@ class CustomTextView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func isEditing(_ editing: Bool) {
+        isEditing = editing
+        titleTextView.isEditable = editing
+        titleTextView.isSelectable = editing
+        bodyTextView.isEditable = editing
+        bodyTextView.isSelectable = editing
+    }
+    
     func setTitlePlaceholder(to text: String) {
         
         titlePlaceholder.text = text
@@ -43,6 +53,7 @@ class CustomTextView: UIView {
         
         titleTextView.text = text
         titleTextView.textColor = .label
+        titlePlaceholder.isOn = false
     }
     
     func setBodyPlaceholder(to text: String) {
@@ -55,6 +66,7 @@ class CustomTextView: UIView {
         
         bodyTextView.text = text
         bodyTextView.textColor = .label
+        bodyPlaceholder.isOn = false
     }
     
     private func setupScrollView() {
@@ -86,15 +98,36 @@ class CustomTextView: UIView {
     
     private func setupTextView() {
         
-        titleTextView.text = titlePlaceholder.text
-        titleTextView.textColor = .secondaryLabel
+        titleTextView.isEditable = isEditing
+        titleTextView.isSelectable = isEditing
+        
+        if titleTextView.hasText {
+            titleTextView.textColor = .label
+        }
+        else {
+            
+            titlePlaceholder.isOn = true
+            titleTextView.text = titlePlaceholder.text
+            titleTextView.textColor = .secondaryLabel
+        }
         titleTextView.font = .preferredFont(forTextStyle: .extraLargeTitle2)
         titleTextView.isScrollEnabled = false
         
         titleTextView.delegate = self
         
-        bodyTextView.text = bodyPlaceholder.text
-        bodyTextView.textColor = .secondaryLabel
+        bodyTextView.isEditable = isEditing
+        bodyTextView.isSelectable = isEditing
+        
+        if bodyTextView.hasText {
+            
+            bodyTextView.textColor = .label
+        }
+        else {
+            
+            bodyPlaceholder.isOn = true
+            bodyTextView.text = bodyPlaceholder.text
+            bodyTextView.textColor = .secondaryLabel
+        }
         bodyTextView.font = .preferredFont(forTextStyle: .title3)
         bodyTextView.isScrollEnabled = false
         

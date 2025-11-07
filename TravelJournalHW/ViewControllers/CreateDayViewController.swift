@@ -42,6 +42,7 @@ class CreateDayViewController: UIViewController {
         textView.delegate = self
         textView.setTitlePlaceholder(to: "Give day a name")
         textView.setBodyPlaceholder(to: "Add day description")
+        textView.isEditing(true)
         
         loadImagesButton.configuration = .tinted()
         loadImagesButton.setTitle("Load Images", for: .normal)

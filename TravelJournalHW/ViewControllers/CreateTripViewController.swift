@@ -43,6 +43,7 @@ class CreateTripViewController: UIViewController {
         textView.delegate = self
         textView.setTitlePlaceholder(to: "Give trip a name")
         textView.setBodyPlaceholder(to: "Add trip description")
+        textView.isEditing(true)
         
         loadImageButton.configuration = .tinted()
         loadImageButton.setTitle("Load Image", for: .normal)

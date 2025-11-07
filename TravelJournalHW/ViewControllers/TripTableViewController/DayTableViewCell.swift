@@ -24,15 +24,16 @@ class DayTableViewCell: UITableViewCell {
         fatalError("init(coder:) not implemented")
     }
     
-    func configure(for day: Day) {
+    func configure(for day: Day, isEditing editing: Bool) {
         
         imagesCollectionView.images = day.images
         imagesCollectionView.reloadData()
         
+        textView.setTitlePlaceholder(to: "Give day a name")
         textView.setTitle(to: day.name)
-        textView.setBodyPlaceholder(to: "Give day a name")
-        textView.setBody(to: day.about)
         textView.setBodyPlaceholder(to: "Describe day")
+        textView.setBody(to: day.about)
+        textView.isEditing(editing)
     }
     
     private func setupUI() {

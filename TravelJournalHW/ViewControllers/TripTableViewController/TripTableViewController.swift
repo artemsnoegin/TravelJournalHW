@@ -80,20 +80,20 @@ class TripTableViewController: UITableViewController, UIGestureRecognizerDelegat
             
             let tripCell = tableView.dequeueReusableCell(withIdentifier: TripTableViewCell.reuseId, for: indexPath) as! TripTableViewCell
             tripCell.selectionStyle = .none
-            tripCell.configure(for: trip)
+            tripCell.configure(for: trip, isEditing: false)
             return tripCell
         }
         else {
             
             let dayCell = tableView.dequeueReusableCell(withIdentifier: DayTableViewCell.reuseId, for: indexPath) as! DayTableViewCell
             dayCell.selectionStyle = .none
-            dayCell.configure(for: trip.days[indexPath.row])
+            dayCell.configure(for: trip.days[indexPath.row], isEditing: false)
             return dayCell
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return view.frame.height
+        return tableView.frame.height
     }
 }

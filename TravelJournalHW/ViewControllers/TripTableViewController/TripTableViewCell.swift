@@ -24,13 +24,14 @@ class TripTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(for trip: Trip) {
+    func configure(for trip: Trip, isEditing editing: Bool) {
         
         mainImageView.image = trip.image
+        textView.setTitlePlaceholder(to: "Give trip a name")
         textView.setTitle(to: trip.name)
-        textView.setBodyPlaceholder(to: "Give trip a name")
-        textView.setBody(to: trip.about)
         textView.setBodyPlaceholder(to: "Describe trip")
+        textView.setBody(to: trip.about)
+        textView.isEditing(editing)
     }
     
     private func setupUI() {

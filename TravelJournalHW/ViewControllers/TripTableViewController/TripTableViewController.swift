@@ -7,34 +7,7 @@
 
 import UIKit
 
-struct Trip {
-    
-    var name: String
-    var about: String
-    var image: UIImage
-    var days: [Day]
-}
-
-struct Day {
-    
-    var name: String
-    var about: String
-    var images: [UIImage]
-}
-
 class TripTableViewController: UITableViewController, UIGestureRecognizerDelegate {
-    
-    private var tripMock: Trip = Trip(
-        name: "Baku, Azerbaijan",
-        about: "The capital and largest city of Azerbaijan, located on the Caspian Sea. It is also a major center for oil production.",
-        image: UIImage(),
-        days: [
-            Day(name: "Day 1", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
-            Day(name: "Day 2", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
-            Day(name: "Day 3", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
-            Day(name: "Day 4", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
-            Day(name: "Day 5", about: "It was very fun!", images: [UIImage(), UIImage(), UIImage()]),
-        ])
     
     private var trip: Trip
     

@@ -39,10 +39,22 @@ class CustomTextView: UIView {
         titleTextView.text = titlePlaceholder.text
     }
     
+    func setTitle(to text: String) {
+        
+        titleTextView.text = text
+        titleTextView.textColor = .label
+    }
+    
     func setBodyPlaceholder(to text: String) {
         
         bodyPlaceholder.text = text
         bodyTextView.text = bodyPlaceholder.text
+    }
+    
+    func setBody(to text: String) {
+        
+        bodyTextView.text = text
+        bodyTextView.textColor = .label
     }
     
     private func setupScrollView() {

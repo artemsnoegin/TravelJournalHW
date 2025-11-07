@@ -17,7 +17,7 @@ class CreateDayViewController: UIViewController {
     private var dayName = ""
     private var dayAbout = ""
     
-    private let imageCollectionView = ImageCollectionView()
+    private let imageCollectionView = DayImagesCollectionView()
     
     private let loadImagesButton = UIButton()
     private let saveButton = UIButton()
@@ -76,7 +76,7 @@ class CreateDayViewController: UIViewController {
             imageCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             imageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageCollectionView.heightAnchor.constraint(equalToConstant: view.frame.width),
+            imageCollectionView.heightAnchor.constraint(equalTo: imageCollectionView.widthAnchor),
             
             loadImagesButton.heightAnchor.constraint(equalToConstant: 60),
             saveButton.heightAnchor.constraint(equalToConstant: 60),

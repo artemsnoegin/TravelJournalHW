@@ -1,5 +1,5 @@
 //
-//  ImageCollectionView.swift
+//  DayImagesCollectionView.swift
 //  TravelJournalHW
 //
 //  Created by Артём Сноегин on 03.11.2025.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCollectionView: UICollectionView {
+class DayImagesCollectionView: UICollectionView {
     
     var images: [UIImage] = []
     
@@ -36,11 +36,11 @@ class ImageCollectionView: UICollectionView {
         showsHorizontalScrollIndicator = false
         isPagingEnabled = true
         
-        register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.reuseId)
+        register(ImagesCollectionViewCell.self, forCellWithReuseIdentifier: ImagesCollectionViewCell.reuseId)
     }
 }
 
-extension ImageCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension DayImagesCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         images.count
@@ -48,7 +48,7 @@ extension ImageCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.reuseId, for: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImagesCollectionViewCell.reuseId, for: indexPath) as! ImagesCollectionViewCell
         
         cell.configure(with: images[indexPath.item])
         
@@ -56,7 +56,7 @@ extension ImageCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
-extension ImageCollectionView: UICollectionViewDelegateFlowLayout {
+extension DayImagesCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         

@@ -1,5 +1,5 @@
 //
-//  ImageCollectionViewCell.swift
+//  ImagesCollectionViewCell.swift
 //  TravelJournalHW
 //
 //  Created by Артём Сноегин on 03.11.2025.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class ImagesCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "ImageCollectionViewCell"
     

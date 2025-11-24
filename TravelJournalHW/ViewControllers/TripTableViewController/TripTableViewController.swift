@@ -10,6 +10,7 @@ import UIKit
 class TripTableViewController: UITableViewController, UIGestureRecognizerDelegate {
     
     private var trip: Trip
+    private var days = [Day]()
     
     init(trip: Trip) {
         
@@ -27,22 +28,33 @@ class TripTableViewController: UITableViewController, UIGestureRecognizerDelegat
         
         setupNavigationBar()
         setupTableView()
+        fetchDays()
+    }
+    
+    private func fetchDays() {
+        
+        days = CoreDataManager.shared.fetchDays(for: trip)
+        tableView.reloadData()
     }
     
     private func setupNavigationBar() {
         
-
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
             
         navigationItem.rightBarButtonItems = [addButton]
+        
+        navigationItem.backAction = UIAction() { _ in
+            
+            self.navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     @objc private func addTapped() {
-        let createDayViewController = CreateDayViewController()
+        let createDayViewController = CreateDayViewController(trip: trip)
         
         createDayViewController.completion = { [weak self] day in
             
-            self?.trip.days.append(day)
+            self?.days.append(day)
             self?.tableView.reloadData()
         }
         
@@ -70,7 +82,7 @@ class TripTableViewController: UITableViewController, UIGestureRecognizerDelegat
             1
         }
         else {
-            trip.days.count
+            days.count
         }
     }
     
@@ -87,7 +99,7 @@ class TripTableViewController: UITableViewController, UIGestureRecognizerDelegat
             
             let dayCell = tableView.dequeueReusableCell(withIdentifier: DayTableViewCell.reuseId, for: indexPath) as! DayTableViewCell
             dayCell.selectionStyle = .none
-            dayCell.configure(for: trip.days[indexPath.row], isEditing: false)
+            dayCell.configure(for: days[indexPath.row], isEditing: false)
             return dayCell
         }
     }

@@ -13,6 +13,8 @@ class CreateDayViewController: UIViewController {
     
     var completion: ((Day) -> Void)?
     
+    private var trip: Trip
+    
     private var dayImages = [UIImage]()
     private var dayName = ""
     private var dayAbout = ""
@@ -25,6 +27,16 @@ class CreateDayViewController: UIViewController {
     private var animatedConstraint: NSLayoutConstraint?
     
     private let textView = CustomTextView()
+    
+    init(trip: Trip) {
+        self.trip = trip
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,7 +126,18 @@ class CreateDayViewController: UIViewController {
     
     @objc private func saveTapped() {
         
-        completion?(Day(name: dayName, about: dayAbout, images: dayImages))
+        let dayId = UUID()
+        let directory = ImageFileManager.shared.createDirectory(dayId.uuidString)
+        
+        dayImages.enumerated().forEach { number, image in
+            
+        ImageFileManager.shared.saveImage(image, directoryPath: directory, fileName: String(number))
+        }
+        
+        let day = CoreDataManager.shared.createDay(name: dayName, about: dayAbout, trip: trip, imagesDirectoryPath: directory.absoluteString)
+        
+        completion?(day)
+        
         navigationController?.popViewController(animated: true)
     }
     

@@ -26,7 +26,11 @@ class TripTableViewCell: UITableViewCell {
     
     func configure(for trip: Trip, isEditing editing: Bool) {
         
-        mainImageView.image = UIImage()
+        if let imagePath = trip.imagePath,
+           let image = ImageFileManager.shared.loadImage(imagePath: imagePath) {
+            mainImageView.image = image
+        }
+        
         textView.setTitlePlaceholder(to: "Give trip a name")
         textView.setTitle(to: trip.name ?? "Trip")
         textView.setBodyPlaceholder(to: "Describe trip")

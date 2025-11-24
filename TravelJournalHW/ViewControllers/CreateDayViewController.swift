@@ -126,7 +126,15 @@ class CreateDayViewController: UIViewController {
     
     @objc private func saveTapped() {
         
-        let day = CoreDataManager.shared.createDay(name: dayName, about: dayAbout, trip: trip, imagesDirectoryPath: "")
+        let dayId = UUID()
+        let directory = ImageFileManager.shared.createDirectory(dayId.uuidString)
+        
+        dayImages.enumerated().forEach { number, image in
+            
+        ImageFileManager.shared.saveImage(image, directoryPath: directory, fileName: String(number))
+        }
+        
+        let day = CoreDataManager.shared.createDay(name: dayName, about: dayAbout, trip: trip, imagesDirectoryPath: directory.absoluteString)
         
         completion?(day)
         

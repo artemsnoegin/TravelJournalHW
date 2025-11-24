@@ -115,7 +115,11 @@ class CreateTripViewController: UIViewController {
     
     @objc private func saveTapped() {
         
-        let trip = CoreDataManager.shared.createTrip(name: tripName, about: tripAbout, days: [], imagePath: "")
+
+        let directory = ImageFileManager.shared.createDirectory(tripName)
+        let imagePath = ImageFileManager.shared.saveImage(tripImage, directoryPath: directory, fileName: "main")
+        let trip = CoreDataManager.shared.createTrip(name: tripName, about: tripAbout, days: [], imagePath: imagePath.absoluteString)
+        print(imagePath)
         
         completion?(trip)
 

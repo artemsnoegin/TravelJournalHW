@@ -25,7 +25,7 @@ extension Trip {
 
 }
 
-// MARK: Generated accessors for days
+// TODO: add documentation
 extension Trip {
 
     @objc(addDaysObject:)

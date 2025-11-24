@@ -9,6 +9,8 @@ import UIKit
 
 class CustomTextView: UIView {
     
+    private var test = "test"
+    
     weak var delegate: CustomTextViewDelegate?
     
     private var isEditing = false

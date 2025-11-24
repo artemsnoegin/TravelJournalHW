@@ -41,7 +41,3 @@ extension Trip {
     @NSManaged public func removeFromDays(_ values: NSSet)
 
 }
-
-extension Trip : Identifiable {
-
-}
